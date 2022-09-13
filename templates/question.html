@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{survey.title}} - Question {{session[survey_type]["current_question"]+1}}
+{% endblock %} 
+
+{% block content %}
+<form action=/{{survey_type}}/answer method="POST">
+  {% with question = survey.questions[session[survey_type]["current_question"]] %}
+
+  <h1>{{question.question}}</h1>
+
+  {% for choice in question.choices %}
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="choices" id="{{choice}}"
+    value="{{choice}}" required 
+    {% if value is mapping %} 
+        {% if value["choice"] == choice %}
+            checked
+        {% endif %}
+    {% else %}
+        {% if value == choice %}
+            checked
+        {% endif %}
+    {% endif %}
+   />
+    <label class="form-check-label" for="{{choice}}">{{choice}}</label>
+  </div>
+  {% endfor %} 
+
+  {% if question.allow_text == True %}
+  <label for="comment">Reasons: </label>
+  <input
+    id="comment"
+    name="comment"
+    class="form-control"
+    {% if value is mapping and value["comment"] %}
+      value="{{value["comment"]}}"
+    {% else %}
+      placeholder="Please tell us why..."
+    {% endif %}
+  />
+
+  {% endif %}
+
+  <button class="btn btn-primary mt-3">
+    {% if session[survey_type]["current_question"] == 3 %} Submit {% else %} Next Question {%
+    endif %}
+  </button>
+
+  {% endwith %}
+</form>
+
+{% if session[survey_type]["current_question"]!= 0 %}
+<form action=/surveys/{{survey_type}} method="POST">
+  <button class="btn btn-primary mt-3">Last Question</button>
+</form>
+{% endif %}
+ 
+<p class="mt-5">Your progress: {{session[survey_type]["current_question"]}}/4 Questions</p>
+<div class="progress">
+  <div class="progress-bar" role="progressbar" style=width:{{session[survey_type]["current_question"]*25}}% aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{session[survey_type]["current_question"]*25}}%</div>
+</div>
+
+
+
+{% endblock %}

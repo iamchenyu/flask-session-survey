@@ -1,0 +1,17 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
+%}
+<h1>Welcome!</h1>
+<p>
+  Thanks for participating in our survey - please choose one survey to start.
+</p>
+<form action="/sessions" method="POST">
+  <div class="form-group">
+    <select name="survey_type" class="form-control" required>
+      <option value="">--Please choose one survey--</option>
+      <option value="satisfaction">Satisfaction Survey</option>
+      <option value="personality">Personality Quiz</option>
+    </select>
+  </div>
+  <button class="btn btn-primary">Go to the survey</button>
+</form>
+{% endblock %}

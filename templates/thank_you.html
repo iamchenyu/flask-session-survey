@@ -1,0 +1,38 @@
+{% extends "base.html" %} {% block title %}Thank you!{% endblock %} {% block
+content %}
+
+<h1 class="text-center">
+  Thank you! - You have finished the survey! Whoo-hoo!
+</h1>
+<hr />
+<h5 class="text-center">Here is a copy of your responses:</h5>
+<hr />
+<p class="text-center font-weight-bold">{{survey.title}}</p>
+<div class="accordion text-center">
+  {% for i in range(4) %}
+  <div class="card w-50" style="margin: 0 auto">
+    <div class="card-header">
+      <p class="mb-0">{{survey.questions[i].question}}</p>
+    </div>
+
+    <div class="collapse show">
+      <div class="card-body">
+        {% if session[survey_type]["answers"][i] is mapping %} {{" -
+        ".join(session[survey_type]["answers"][i].values())}} {% else %}
+        {{session[survey_type]["answers"][i]}} {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<button
+  class="btn btn-primary d-flex justify-content-center"
+  style="margin: 30px auto"
+>
+  <a href="/surveys" style="color: white; text-decoration: none"
+    >Go To Homepage</a
+  >
+</button>
+
+{% endblock %}
